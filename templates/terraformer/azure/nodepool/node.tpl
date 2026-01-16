@@ -1,7 +1,7 @@
 {{- $clusterName           := .Data.ClusterData.ClusterName}}
 {{- $clusterHash           := .Data.ClusterData.ClusterHash}}
 {{- $uniqueFingerPrint     := .Fingerprint }}
-{{- $specName              := .Data.Provider.SpecName }}
+{{- $specName              := (index .Data.NodePools 0).Details.Provider.SpecName }}
 {{- $isKubernetesCluster   := eq .Data.ClusterData.ClusterType "K8s" }}
 {{- $isLoadbalancerCluster := eq .Data.ClusterData.ClusterType "LB" }}
 
