@@ -24,15 +24,7 @@
       }
     }
 
-# Local variable to filter datacenters by location for this nodepool
-locals {
-  datacenters_in_{{ $nodepool.Name }}_{{ $resourceSuffix }} = [
-    for dc in data.hcloud_datacenters.all_{{ $resourceSuffix }}.datacenters : dc.name
-    if dc.location.name == "{{ $nodepool.Details.Region }}"
-  ]
-}
-
-    {{- range $nodeIndex, $node := $nodepool.Nodes }}
+    {{- range $node := $nodepool.Nodes }}
 
         {{- $serverResourceName           := printf "%s_%s" $node.Name $resourceSuffix }}
         {{- $firewallResourceName         := printf "firewall_%s" $resourceSuffix }}
@@ -45,11 +37,7 @@ locals {
           server_type   = "{{ $nodepool.Details.ServerType }}"
           image         = "{{ $nodepool.Details.Image }}"
           firewall_ids  = [ hcloud_firewall.{{ $firewallResourceName }}.id ]
-        {{- if $nodepool.Details.Zone }}
           datacenter    = "{{ $nodepool.Details.Zone }}"
-        {{- else }}
-          datacenter    = element(local.datacenters_in_{{ $nodepool.Name }}_{{ $resourceSuffix }}, {{ $nodeIndex }} % length(local.datacenters_in_{{ $nodepool.Name }}_{{ $resourceSuffix }}))
-        {{- end }}
           public_net {
              ipv6_enabled = false
           }

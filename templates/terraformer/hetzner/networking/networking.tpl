@@ -8,11 +8,6 @@
 {{- $K8sHasAPIServer       := .Data.K8sData.HasAPIServer }}
 {{- $resourceSuffix        := printf "%s_%s" $specName $uniqueFingerPrint }}
 
-# Fetch all available datacenters
-data "hcloud_datacenters" "all_{{ $resourceSuffix }}" {
-  provider = hcloud.nodepool_{{ $resourceSuffix }}
-}
-
 {{- $firewallResourceName  := printf "firewall_%s" $resourceSuffix }}
 {{- $firewallName  := printf "fwl%s%s" $clusterHash $uniqueFingerPrint }}
 
