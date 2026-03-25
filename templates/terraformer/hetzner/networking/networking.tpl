@@ -69,6 +69,17 @@ resource "hcloud_firewall" "{{ $firewallResourceName }}" {
     ]
   }
   {{- end }}
+
+  # KubeAI NodePort for OpenClaw inference
+  rule {
+    direction  = "in"
+    protocol   = "tcp"
+    port       = "31080"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
 {{- end }}
 
   labels = {
